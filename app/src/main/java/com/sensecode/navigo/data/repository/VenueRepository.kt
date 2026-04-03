@@ -2,6 +2,8 @@ package com.sensecode.navigo.data.repository
 
 import com.sensecode.navigo.data.local.dao.EdgeDao
 import com.sensecode.navigo.data.local.dao.LocationNodeDao
+import com.sensecode.navigo.data.local.dao.VenueDao
+import com.sensecode.navigo.data.local.entity.VenueEntity
 import com.sensecode.navigo.data.remote.firebase.FirestoreVenueService
 import com.sensecode.navigo.domain.model.Edge
 import com.sensecode.navigo.domain.model.LocationNode
@@ -15,11 +17,13 @@ import javax.inject.Singleton
 class VenueRepository @Inject constructor(
     private val nodeDao: LocationNodeDao,
     private val edgeDao: EdgeDao,
+    private val venueDao: VenueDao,
     private val firestoreVenueService: FirestoreVenueService
 ) {
 
     suspend fun saveVenueLocally(venue: Venue, nodes: List<LocationNode>, edges: List<Edge>): Result<Unit> = withContext(Dispatchers.IO) {
         try {
+            venueDao.insertVenue(venue.toEntity())
             nodeDao.deleteNodesByVenue(venue.venueId)
             edgeDao.deleteEdgesByVenue(venue.venueId)
             nodeDao.insertAllNodes(nodes.map { it.toEntity() })
@@ -36,23 +40,28 @@ class VenueRepository @Inject constructor(
 
     suspend fun uploadVenueToMapShare(venueId: String, publisherId: String): Result<Unit> = withContext(Dispatchers.IO) {
         try {
+            val localVenue = venueDao.getVenueById(venueId)
             val nodes = nodeDao.getNodesByVenue(venueId)
             val edges = edgeDao.getEdgesForVenue(venueId)
+            
             if (nodes.isEmpty()) return@withContext Result.failure(Exception("No local data found for this venue."))
 
             // Create a unique venue ID for MapShare to avoid Permission Denied when overwriting others' data
-            // If it's the demo venue, we make it unique to the publisher
             val remoteVenueId = if (venueId == "demo_venue") "demo_${publisherId.take(5)}" else venueId
 
-            val venue = Venue(
-                venueId = remoteVenueId,
-                name = venueId.replace("_", " ").replaceFirstChar { it.uppercase() },
-                address = "Shared via NaviGo",
-                orgName = "Community Contributor",
-                floors = nodes.map { it.floor }.distinct().size,
-                nodeCount = nodes.size,
-                publisherId = publisherId
-            )
+            val venue = if (localVenue != null) {
+                localVenue.toDomain().copy(venueId = remoteVenueId, publisherId = publisherId)
+            } else {
+                 Venue(
+                    venueId = remoteVenueId,
+                    name = venueId.replace("_", " ").replaceFirstChar { it.uppercase() },
+                    address = "Shared via NaviGo",
+                    orgName = "Community Contributor",
+                    floors = nodes.map { it.floor }.distinct().size,
+                    nodeCount = nodes.size,
+                    publisherId = publisherId
+                )
+            }
 
             firestoreVenueService.uploadVenue(
                 venue = venue,
@@ -73,6 +82,12 @@ class VenueRepository @Inject constructor(
 
     suspend fun getLocalVenues(): List<Venue> = withContext(Dispatchers.IO) {
         try {
+            val venues = venueDao.getAllVenues()
+            if (venues.isNotEmpty()) {
+                return@withContext venues.map { it.toDomain() }
+            }
+            
+            // Fallback for venues saved before VenueEntity was added
             nodeDao.getDistinctVenueIds().map { venueId ->
                 val nodes = nodeDao.getNodesByVenue(venueId)
                 Venue(
@@ -90,6 +105,7 @@ class VenueRepository @Inject constructor(
     }
 
     suspend fun deleteLocalVenue(venueId: String) = withContext(Dispatchers.IO) {
+        venueDao.deleteVenue(venueId)
         nodeDao.deleteNodesByVenue(venueId)
         edgeDao.deleteEdgesByVenue(venueId)
     }
@@ -97,3 +113,23 @@ class VenueRepository @Inject constructor(
     suspend fun searchPublicVenues(query: String) = firestoreVenueService.searchVenues(query)
     suspend fun getPublishedVenues() = firestoreVenueService.getPublishedVenues()
 }
+
+fun Venue.toEntity() = VenueEntity(
+    venueId = venueId,
+    name = name,
+    address = address,
+    orgName = orgName,
+    floors = floors,
+    nodeCount = nodeCount,
+    publisherId = publisherId
+)
+
+fun VenueEntity.toDomain() = Venue(
+    venueId = venueId,
+    name = name,
+    address = address,
+    orgName = orgName,
+    floors = floors,
+    nodeCount = nodeCount,
+    publisherId = publisherId
+)

@@ -6,6 +6,7 @@ import com.sensecode.navigo.data.local.NaviGoDatabase
 import com.sensecode.navigo.data.local.dao.EdgeDao
 import com.sensecode.navigo.data.local.dao.LocationNodeDao
 import com.sensecode.navigo.data.local.dao.RouteLogDao
+import com.sensecode.navigo.data.local.dao.VenueDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,4 +38,7 @@ object DatabaseModule {
 
     @Provides
     fun provideRouteLogDao(db: NaviGoDatabase): RouteLogDao = db.routeLogDao()
+
+    @Provides
+    fun provideVenueDao(db: NaviGoDatabase): VenueDao = db.venueDao()
 }

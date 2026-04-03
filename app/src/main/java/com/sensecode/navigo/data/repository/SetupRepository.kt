@@ -2,8 +2,10 @@ package com.sensecode.navigo.data.repository
 
 import com.sensecode.navigo.data.local.dao.EdgeDao
 import com.sensecode.navigo.data.local.dao.LocationNodeDao
+import com.sensecode.navigo.data.local.dao.VenueDao
 import com.sensecode.navigo.data.local.entity.EdgeEntity
 import com.sensecode.navigo.data.local.entity.LocationNodeEntity
+import com.sensecode.navigo.data.local.entity.VenueEntity
 import com.sensecode.navigo.domain.algorithm.EdgeCalculator
 import com.sensecode.navigo.setup.SetupRecordingSession
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +17,8 @@ import javax.inject.Singleton
 @Singleton
 class SetupRepository @Inject constructor(
     private val nodeDao: LocationNodeDao,
-    private val edgeDao: EdgeDao
+    private val edgeDao: EdgeDao,
+    private val venueDao: VenueDao
 ) {
 
     suspend fun saveRecordingSession(
@@ -33,6 +36,17 @@ class SetupRepository @Inject constructor(
             if (recordedNodes.isEmpty()) {
                 return@withContext Result.failure(Exception("No nodes recorded"))
             }
+
+            // Save Venue Details
+            val venueEntity = VenueEntity(
+                venueId = venueId,
+                name = venueName,
+                address = venueAddress,
+                orgName = orgName,
+                floors = 1, // Assuming 1 for now or we can calculate if multiple floors were recorded
+                nodeCount = recordedNodes.size
+            )
+            venueDao.insertVenue(venueEntity)
 
             // Normalize positions to [0.1, 0.9] range
             val xs = recordedNodes.map { it.cumulativeX }

@@ -17,6 +17,8 @@ import com.sensecode.navigo.data.local.dao.LocationNodeDao;
 import com.sensecode.navigo.data.local.dao.LocationNodeDao_Impl;
 import com.sensecode.navigo.data.local.dao.RouteLogDao;
 import com.sensecode.navigo.data.local.dao.RouteLogDao_Impl;
+import com.sensecode.navigo.data.local.dao.VenueDao;
+import com.sensecode.navigo.data.local.dao.VenueDao_Impl;
 import java.lang.Class;
 import java.lang.Override;
 import java.lang.String;
@@ -38,17 +40,20 @@ public final class NaviGoDatabase_Impl extends NaviGoDatabase {
 
   private volatile RouteLogDao _routeLogDao;
 
+  private volatile VenueDao _venueDao;
+
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(1) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(2) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS `location_nodes` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `floor` INTEGER NOT NULL, `venueId` TEXT NOT NULL, `accessible` INTEGER NOT NULL, `type` TEXT NOT NULL, `relativeX` REAL NOT NULL, `relativeY` REAL NOT NULL, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `edges` (`fromNodeId` TEXT NOT NULL, `toNodeId` TEXT NOT NULL, `venueId` TEXT NOT NULL, `distanceM` REAL NOT NULL, `directionDegrees` REAL NOT NULL, `directionLabel` TEXT NOT NULL, `instruction` TEXT NOT NULL, `hasStairs` INTEGER NOT NULL, `estimatedSeconds` INTEGER NOT NULL, PRIMARY KEY(`fromNodeId`, `toNodeId`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `route_logs` (`sessionId` TEXT NOT NULL, `venueId` TEXT NOT NULL, `startNodeId` TEXT NOT NULL, `destinationNodeId` TEXT NOT NULL, `startTime` INTEGER NOT NULL, `endTime` INTEGER NOT NULL, `deviationCount` INTEGER NOT NULL, `completedSuccessfully` INTEGER NOT NULL, `routeNodeIds` TEXT NOT NULL, PRIMARY KEY(`sessionId`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `venues` (`venueId` TEXT NOT NULL, `name` TEXT NOT NULL, `address` TEXT NOT NULL, `orgName` TEXT NOT NULL, `floors` INTEGER NOT NULL, `nodeCount` INTEGER NOT NULL, `publisherId` TEXT NOT NULL, PRIMARY KEY(`venueId`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a472ba1ebd0a6200dbb69310d29bdd5d')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd041a1f9a313b81dc8e814009d5033ea')");
       }
 
       @Override
@@ -56,6 +61,7 @@ public final class NaviGoDatabase_Impl extends NaviGoDatabase {
         db.execSQL("DROP TABLE IF EXISTS `location_nodes`");
         db.execSQL("DROP TABLE IF EXISTS `edges`");
         db.execSQL("DROP TABLE IF EXISTS `route_logs`");
+        db.execSQL("DROP TABLE IF EXISTS `venues`");
         final List<? extends RoomDatabase.Callback> _callbacks = mCallbacks;
         if (_callbacks != null) {
           for (RoomDatabase.Callback _callback : _callbacks) {
@@ -155,9 +161,26 @@ public final class NaviGoDatabase_Impl extends NaviGoDatabase {
                   + " Expected:\n" + _infoRouteLogs + "\n"
                   + " Found:\n" + _existingRouteLogs);
         }
+        final HashMap<String, TableInfo.Column> _columnsVenues = new HashMap<String, TableInfo.Column>(7);
+        _columnsVenues.put("venueId", new TableInfo.Column("venueId", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsVenues.put("name", new TableInfo.Column("name", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsVenues.put("address", new TableInfo.Column("address", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsVenues.put("orgName", new TableInfo.Column("orgName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsVenues.put("floors", new TableInfo.Column("floors", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsVenues.put("nodeCount", new TableInfo.Column("nodeCount", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsVenues.put("publisherId", new TableInfo.Column("publisherId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysVenues = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesVenues = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoVenues = new TableInfo("venues", _columnsVenues, _foreignKeysVenues, _indicesVenues);
+        final TableInfo _existingVenues = TableInfo.read(db, "venues");
+        if (!_infoVenues.equals(_existingVenues)) {
+          return new RoomOpenHelper.ValidationResult(false, "venues(com.sensecode.navigo.data.local.entity.VenueEntity).\n"
+                  + " Expected:\n" + _infoVenues + "\n"
+                  + " Found:\n" + _existingVenues);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "a472ba1ebd0a6200dbb69310d29bdd5d", "b8c17d82ed7bd99ed192c6dcefc4fc3a");
+    }, "d041a1f9a313b81dc8e814009d5033ea", "7a2ffd8a8f90c366437acad363381d81");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -168,7 +191,7 @@ public final class NaviGoDatabase_Impl extends NaviGoDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     final HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "location_nodes","edges","route_logs");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "location_nodes","edges","route_logs","venues");
   }
 
   @Override
@@ -180,6 +203,7 @@ public final class NaviGoDatabase_Impl extends NaviGoDatabase {
       _db.execSQL("DELETE FROM `location_nodes`");
       _db.execSQL("DELETE FROM `edges`");
       _db.execSQL("DELETE FROM `route_logs`");
+      _db.execSQL("DELETE FROM `venues`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -197,6 +221,7 @@ public final class NaviGoDatabase_Impl extends NaviGoDatabase {
     _typeConvertersMap.put(LocationNodeDao.class, LocationNodeDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(EdgeDao.class, EdgeDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(RouteLogDao.class, RouteLogDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(VenueDao.class, VenueDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -253,6 +278,20 @@ public final class NaviGoDatabase_Impl extends NaviGoDatabase {
           _routeLogDao = new RouteLogDao_Impl(this);
         }
         return _routeLogDao;
+      }
+    }
+  }
+
+  @Override
+  public VenueDao venueDao() {
+    if (_venueDao != null) {
+      return _venueDao;
+    } else {
+      synchronized(this) {
+        if(_venueDao == null) {
+          _venueDao = new VenueDao_Impl(this);
+        }
+        return _venueDao;
       }
     }
   }

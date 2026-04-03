@@ -18,6 +18,7 @@ import com.sensecode.navigo.data.local.NaviGoDatabase;
 import com.sensecode.navigo.data.local.dao.EdgeDao;
 import com.sensecode.navigo.data.local.dao.LocationNodeDao;
 import com.sensecode.navigo.data.local.dao.RouteLogDao;
+import com.sensecode.navigo.data.local.dao.VenueDao;
 import com.sensecode.navigo.data.remote.firebase.FirebaseAuthService;
 import com.sensecode.navigo.data.remote.firebase.FirestoreVenueService;
 import com.sensecode.navigo.data.remote.gemini.GeminiClient;
@@ -30,6 +31,7 @@ import com.sensecode.navigo.di.DatabaseModule_ProvideDatabaseFactory;
 import com.sensecode.navigo.di.DatabaseModule_ProvideEdgeDaoFactory;
 import com.sensecode.navigo.di.DatabaseModule_ProvideNodeDaoFactory;
 import com.sensecode.navigo.di.DatabaseModule_ProvideRouteLogDaoFactory;
+import com.sensecode.navigo.di.DatabaseModule_ProvideVenueDaoFactory;
 import com.sensecode.navigo.di.FirebaseModule_ProvideFirebaseAuthFactory;
 import com.sensecode.navigo.di.FirebaseModule_ProvideFirebaseFirestoreFactory;
 import com.sensecode.navigo.di.NetworkModule_ProvideGeminiClientFactory;
@@ -428,35 +430,35 @@ public final class DaggerNaviGoApplication_HiltComponents_SingletonC {
 
     @IdentifierNameString
     private static final class LazyClassKeyProvider {
-      static String com_sensecode_navigo_home_HomeViewModel = "com.sensecode.navigo.home.HomeViewModel";
-
-      static String com_sensecode_navigo_onboarding_OnboardingViewModel = "com.sensecode.navigo.onboarding.OnboardingViewModel";
+      static String com_sensecode_navigo_mapshare_MapShareViewModel = "com.sensecode.navigo.mapshare.MapShareViewModel";
 
       static String com_sensecode_navigo_setup_SetupViewModel = "com.sensecode.navigo.setup.SetupViewModel";
 
+      static String com_sensecode_navigo_home_HomeViewModel = "com.sensecode.navigo.home.HomeViewModel";
+
       static String com_sensecode_navigo_auth_AuthViewModel = "com.sensecode.navigo.auth.AuthViewModel";
+
+      static String com_sensecode_navigo_onboarding_OnboardingViewModel = "com.sensecode.navigo.onboarding.OnboardingViewModel";
 
       static String com_sensecode_navigo_navigation_ui_NavigationViewModel = "com.sensecode.navigo.navigation_ui.NavigationViewModel";
 
-      static String com_sensecode_navigo_mapshare_MapShareViewModel = "com.sensecode.navigo.mapshare.MapShareViewModel";
-
       @KeepFieldType
-      HomeViewModel com_sensecode_navigo_home_HomeViewModel2;
-
-      @KeepFieldType
-      OnboardingViewModel com_sensecode_navigo_onboarding_OnboardingViewModel2;
+      MapShareViewModel com_sensecode_navigo_mapshare_MapShareViewModel2;
 
       @KeepFieldType
       SetupViewModel com_sensecode_navigo_setup_SetupViewModel2;
 
       @KeepFieldType
+      HomeViewModel com_sensecode_navigo_home_HomeViewModel2;
+
+      @KeepFieldType
       AuthViewModel com_sensecode_navigo_auth_AuthViewModel2;
 
       @KeepFieldType
-      NavigationViewModel com_sensecode_navigo_navigation_ui_NavigationViewModel2;
+      OnboardingViewModel com_sensecode_navigo_onboarding_OnboardingViewModel2;
 
       @KeepFieldType
-      MapShareViewModel com_sensecode_navigo_mapshare_MapShareViewModel2;
+      NavigationViewModel com_sensecode_navigo_navigation_ui_NavigationViewModel2;
     }
   }
 
@@ -520,13 +522,13 @@ public final class DaggerNaviGoApplication_HiltComponents_SingletonC {
     private static final class LazyClassKeyProvider {
       static String com_sensecode_navigo_home_HomeViewModel = "com.sensecode.navigo.home.HomeViewModel";
 
-      static String com_sensecode_navigo_navigation_ui_NavigationViewModel = "com.sensecode.navigo.navigation_ui.NavigationViewModel";
+      static String com_sensecode_navigo_auth_AuthViewModel = "com.sensecode.navigo.auth.AuthViewModel";
 
       static String com_sensecode_navigo_onboarding_OnboardingViewModel = "com.sensecode.navigo.onboarding.OnboardingViewModel";
 
-      static String com_sensecode_navigo_auth_AuthViewModel = "com.sensecode.navigo.auth.AuthViewModel";
-
       static String com_sensecode_navigo_mapshare_MapShareViewModel = "com.sensecode.navigo.mapshare.MapShareViewModel";
+
+      static String com_sensecode_navigo_navigation_ui_NavigationViewModel = "com.sensecode.navigo.navigation_ui.NavigationViewModel";
 
       static String com_sensecode_navigo_setup_SetupViewModel = "com.sensecode.navigo.setup.SetupViewModel";
 
@@ -534,16 +536,16 @@ public final class DaggerNaviGoApplication_HiltComponents_SingletonC {
       HomeViewModel com_sensecode_navigo_home_HomeViewModel2;
 
       @KeepFieldType
-      NavigationViewModel com_sensecode_navigo_navigation_ui_NavigationViewModel2;
+      AuthViewModel com_sensecode_navigo_auth_AuthViewModel2;
 
       @KeepFieldType
       OnboardingViewModel com_sensecode_navigo_onboarding_OnboardingViewModel2;
 
       @KeepFieldType
-      AuthViewModel com_sensecode_navigo_auth_AuthViewModel2;
+      MapShareViewModel com_sensecode_navigo_mapshare_MapShareViewModel2;
 
       @KeepFieldType
-      MapShareViewModel com_sensecode_navigo_mapshare_MapShareViewModel2;
+      NavigationViewModel com_sensecode_navigo_navigation_ui_NavigationViewModel2;
 
       @KeepFieldType
       SetupViewModel com_sensecode_navigo_setup_SetupViewModel2;
@@ -716,6 +718,10 @@ public final class DaggerNaviGoApplication_HiltComponents_SingletonC {
       return DatabaseModule_ProvideEdgeDaoFactory.provideEdgeDao(provideDatabaseProvider.get());
     }
 
+    private VenueDao venueDao() {
+      return DatabaseModule_ProvideVenueDaoFactory.provideVenueDao(provideDatabaseProvider.get());
+    }
+
     private RouteLogDao routeLogDao() {
       return DatabaseModule_ProvideRouteLogDaoFactory.provideRouteLogDao(provideDatabaseProvider.get());
     }
@@ -781,7 +787,7 @@ public final class DaggerNaviGoApplication_HiltComponents_SingletonC {
           return (T) FirebaseModule_ProvideFirebaseAuthFactory.provideFirebaseAuth();
 
           case 2: // com.sensecode.navigo.data.repository.VenueRepository 
-          return (T) new VenueRepository(singletonCImpl.locationNodeDao(), singletonCImpl.edgeDao(), singletonCImpl.firestoreVenueServiceProvider.get());
+          return (T) new VenueRepository(singletonCImpl.locationNodeDao(), singletonCImpl.edgeDao(), singletonCImpl.venueDao(), singletonCImpl.firestoreVenueServiceProvider.get());
 
           case 3: // com.sensecode.navigo.data.local.NaviGoDatabase 
           return (T) DatabaseModule_ProvideDatabaseFactory.provideDatabase(ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
@@ -823,7 +829,7 @@ public final class DaggerNaviGoApplication_HiltComponents_SingletonC {
           return (T) NetworkModule_ProvideNeo4jClientFactory.provideNeo4jClient();
 
           case 16: // com.sensecode.navigo.data.repository.SetupRepository 
-          return (T) new SetupRepository(singletonCImpl.locationNodeDao(), singletonCImpl.edgeDao());
+          return (T) new SetupRepository(singletonCImpl.locationNodeDao(), singletonCImpl.edgeDao(), singletonCImpl.venueDao());
 
           default: throw new AssertionError(id);
         }
