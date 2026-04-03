@@ -18,83 +18,62 @@ class VenueRepository @Inject constructor(
     private val firestoreVenueService: FirestoreVenueService
 ) {
 
-    suspend fun saveVenueLocally(
-        venue: Venue,
-        nodes: List<LocationNode>,
-        edges: List<Edge>
-    ): Result<Unit> = withContext(Dispatchers.IO) {
+    suspend fun saveVenueLocally(venue: Venue, nodes: List<LocationNode>, edges: List<Edge>): Result<Unit> = withContext(Dispatchers.IO) {
         try {
-            // Clear existing data for this venue
             nodeDao.deleteNodesByVenue(venue.venueId)
             edgeDao.deleteEdgesByVenue(venue.venueId)
-
-            // Insert all nodes
             nodeDao.insertAllNodes(nodes.map { it.toEntity() })
-
-            // Insert all edges
             edgeDao.insertAllEdges(edges.map { it.toEntity() })
-
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun uploadVenueToMapShare(venueId: String): Result<Unit> = withContext(Dispatchers.IO) {
+    suspend fun uploadVenueToMapShare(venue: Venue, nodes: List<LocationNode>, edges: List<Edge>): Result<Unit> = withContext(Dispatchers.IO) {
+        firestoreVenueService.uploadVenue(venue, nodes, edges)
+    }
+
+    suspend fun uploadVenueToMapShare(venueId: String, publisherId: String): Result<Unit> = withContext(Dispatchers.IO) {
         try {
             val nodes = nodeDao.getNodesByVenue(venueId)
             val edges = edgeDao.getEdgesForVenue(venueId)
+            if (nodes.isEmpty()) return@withContext Result.failure(Exception("No local data found for this venue."))
 
-            if (nodes.isEmpty()) {
-                return@withContext Result.failure(Exception("No data found for venue $venueId"))
-            }
+            // Create a unique venue ID for MapShare to avoid Permission Denied when overwriting others' data
+            // If it's the demo venue, we make it unique to the publisher
+            val remoteVenueId = if (venueId == "demo_venue") "demo_${publisherId.take(5)}" else venueId
 
-            val firstNode = nodes.first()
             val venue = Venue(
-                venueId = venueId,
-                name = venueId, // Will be overwritten by caller with actual metadata
-                address = "",
-                orgName = "",
+                venueId = remoteVenueId,
+                name = venueId.replace("_", " ").replaceFirstChar { it.uppercase() },
+                address = "Shared via NaviGo",
+                orgName = "Community Contributor",
                 floors = nodes.map { it.floor }.distinct().size,
-                nodeCount = nodes.size
+                nodeCount = nodes.size,
+                publisherId = publisherId
             )
 
             firestoreVenueService.uploadVenue(
                 venue = venue,
-                nodes = nodes.map { it.toDomain() },
-                edges = edges.map { it.toDomain() }
+                nodes = nodes.map { it.toDomain().copy(venueId = remoteVenueId) },
+                edges = edges.map { it.toDomain().copy(venueId = remoteVenueId) }
             )
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
-
-    suspend fun uploadVenueToMapShare(
-        venue: Venue,
-        nodes: List<LocationNode>,
-        edges: List<Edge>
-    ): Result<Unit> {
-        return firestoreVenueService.uploadVenue(venue, nodes, edges)
     }
 
     suspend fun downloadVenueFromMapShare(venueId: String): Result<Unit> = withContext(Dispatchers.IO) {
-        try {
-            val result = firestoreVenueService.downloadVenue(venueId)
-            result.fold(
-                onSuccess = { (venue, nodes, edges) ->
-                    saveVenueLocally(venue, nodes, edges)
-                },
-                onFailure = { Result.failure(it) }
-            )
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+        firestoreVenueService.downloadVenue(venueId).fold(
+            onSuccess = { (venue, nodes, edges) -> saveVenueLocally(venue, nodes, edges) },
+            onFailure = { Result.failure(it) }
+        )
     }
 
     suspend fun getLocalVenues(): List<Venue> = withContext(Dispatchers.IO) {
         try {
-            val venueIds = nodeDao.getDistinctVenueIds()
-            venueIds.map { venueId ->
+            nodeDao.getDistinctVenueIds().map { venueId ->
                 val nodes = nodeDao.getNodesByVenue(venueId)
                 Venue(
                     venueId = venueId,
@@ -115,11 +94,6 @@ class VenueRepository @Inject constructor(
         edgeDao.deleteEdgesByVenue(venueId)
     }
 
-    suspend fun searchPublicVenues(query: String): Result<List<Venue>> {
-        return firestoreVenueService.searchVenues(query)
-    }
-
-    suspend fun getPublishedVenues(): Result<List<Venue>> {
-        return firestoreVenueService.getPublishedVenues()
-    }
+    suspend fun searchPublicVenues(query: String) = firestoreVenueService.searchVenues(query)
+    suspend fun getPublishedVenues() = firestoreVenueService.getPublishedVenues()
 }

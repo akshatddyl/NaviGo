@@ -428,35 +428,35 @@ public final class DaggerNaviGoApplication_HiltComponents_SingletonC {
 
     @IdentifierNameString
     private static final class LazyClassKeyProvider {
+      static String com_sensecode_navigo_home_HomeViewModel = "com.sensecode.navigo.home.HomeViewModel";
+
       static String com_sensecode_navigo_onboarding_OnboardingViewModel = "com.sensecode.navigo.onboarding.OnboardingViewModel";
-
-      static String com_sensecode_navigo_auth_AuthViewModel = "com.sensecode.navigo.auth.AuthViewModel";
-
-      static String com_sensecode_navigo_mapshare_MapShareViewModel = "com.sensecode.navigo.mapshare.MapShareViewModel";
 
       static String com_sensecode_navigo_setup_SetupViewModel = "com.sensecode.navigo.setup.SetupViewModel";
 
-      static String com_sensecode_navigo_home_HomeViewModel = "com.sensecode.navigo.home.HomeViewModel";
+      static String com_sensecode_navigo_auth_AuthViewModel = "com.sensecode.navigo.auth.AuthViewModel";
 
       static String com_sensecode_navigo_navigation_ui_NavigationViewModel = "com.sensecode.navigo.navigation_ui.NavigationViewModel";
 
-      @KeepFieldType
-      OnboardingViewModel com_sensecode_navigo_onboarding_OnboardingViewModel2;
-
-      @KeepFieldType
-      AuthViewModel com_sensecode_navigo_auth_AuthViewModel2;
-
-      @KeepFieldType
-      MapShareViewModel com_sensecode_navigo_mapshare_MapShareViewModel2;
-
-      @KeepFieldType
-      SetupViewModel com_sensecode_navigo_setup_SetupViewModel2;
+      static String com_sensecode_navigo_mapshare_MapShareViewModel = "com.sensecode.navigo.mapshare.MapShareViewModel";
 
       @KeepFieldType
       HomeViewModel com_sensecode_navigo_home_HomeViewModel2;
 
       @KeepFieldType
+      OnboardingViewModel com_sensecode_navigo_onboarding_OnboardingViewModel2;
+
+      @KeepFieldType
+      SetupViewModel com_sensecode_navigo_setup_SetupViewModel2;
+
+      @KeepFieldType
+      AuthViewModel com_sensecode_navigo_auth_AuthViewModel2;
+
+      @KeepFieldType
       NavigationViewModel com_sensecode_navigo_navigation_ui_NavigationViewModel2;
+
+      @KeepFieldType
+      MapShareViewModel com_sensecode_navigo_mapshare_MapShareViewModel2;
     }
   }
 
@@ -520,33 +520,33 @@ public final class DaggerNaviGoApplication_HiltComponents_SingletonC {
     private static final class LazyClassKeyProvider {
       static String com_sensecode_navigo_home_HomeViewModel = "com.sensecode.navigo.home.HomeViewModel";
 
-      static String com_sensecode_navigo_mapshare_MapShareViewModel = "com.sensecode.navigo.mapshare.MapShareViewModel";
-
       static String com_sensecode_navigo_navigation_ui_NavigationViewModel = "com.sensecode.navigo.navigation_ui.NavigationViewModel";
-
-      static String com_sensecode_navigo_setup_SetupViewModel = "com.sensecode.navigo.setup.SetupViewModel";
 
       static String com_sensecode_navigo_onboarding_OnboardingViewModel = "com.sensecode.navigo.onboarding.OnboardingViewModel";
 
       static String com_sensecode_navigo_auth_AuthViewModel = "com.sensecode.navigo.auth.AuthViewModel";
 
+      static String com_sensecode_navigo_mapshare_MapShareViewModel = "com.sensecode.navigo.mapshare.MapShareViewModel";
+
+      static String com_sensecode_navigo_setup_SetupViewModel = "com.sensecode.navigo.setup.SetupViewModel";
+
       @KeepFieldType
       HomeViewModel com_sensecode_navigo_home_HomeViewModel2;
 
       @KeepFieldType
-      MapShareViewModel com_sensecode_navigo_mapshare_MapShareViewModel2;
-
-      @KeepFieldType
       NavigationViewModel com_sensecode_navigo_navigation_ui_NavigationViewModel2;
-
-      @KeepFieldType
-      SetupViewModel com_sensecode_navigo_setup_SetupViewModel2;
 
       @KeepFieldType
       OnboardingViewModel com_sensecode_navigo_onboarding_OnboardingViewModel2;
 
       @KeepFieldType
       AuthViewModel com_sensecode_navigo_auth_AuthViewModel2;
+
+      @KeepFieldType
+      MapShareViewModel com_sensecode_navigo_mapshare_MapShareViewModel2;
+
+      @KeepFieldType
+      SetupViewModel com_sensecode_navigo_setup_SetupViewModel2;
     }
 
     private static final class SwitchingProvider<T> implements Provider<T> {
@@ -574,7 +574,7 @@ public final class DaggerNaviGoApplication_HiltComponents_SingletonC {
           return (T) new AuthViewModel(singletonCImpl.firebaseAuthServiceProvider.get());
 
           case 1: // com.sensecode.navigo.home.HomeViewModel 
-          return (T) new HomeViewModel(singletonCImpl.venueRepositoryProvider.get(), singletonCImpl.locationNodeDao(), singletonCImpl.edgeDao(), singletonCImpl.speechInputManagerProvider.get(), singletonCImpl.ttsManagerProvider.get(), ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
+          return (T) new HomeViewModel(singletonCImpl.venueRepositoryProvider.get(), singletonCImpl.locationNodeDao(), singletonCImpl.edgeDao(), singletonCImpl.speechInputManagerProvider.get(), singletonCImpl.ttsManagerProvider.get(), singletonCImpl.firebaseAuthServiceProvider.get(), ApplicationContextModule_ProvideContextFactory.provideContext(singletonCImpl.applicationContextModule));
 
           case 2: // com.sensecode.navigo.mapshare.MapShareViewModel 
           return (T) new MapShareViewModel(singletonCImpl.venueRepositoryProvider.get(), viewModelCImpl.downloadVenueUseCase(), singletonCImpl.navigationRepositoryProvider.get(), singletonCImpl.firestoreVenueServiceProvider.get());

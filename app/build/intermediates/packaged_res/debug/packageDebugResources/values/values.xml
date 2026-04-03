@@ -230,6 +230,10 @@
     <string name="tts_not_found_dest">I couldn\'t find that location. Please try again.</string>
     <string name="tts_route_found">Route found. %1$s, approximately %2$d minutes walk. Starting navigation now.</string>
     <string name="tts_which_floor">Which floor are you currently on?</string>
+    <string name="upload">Upload</string>
+    <string name="upload_failed">Upload failed: %1$s</string>
+    <string name="upload_success">Venue uploaded to MapShare!</string>
+    <string name="uploading">Uploading venue...</string>
     <string name="view_map">View Map</string>
     <string name="walk_straight">Walk straight</string>
     <string name="where_are_you">Where are you right now?</string>

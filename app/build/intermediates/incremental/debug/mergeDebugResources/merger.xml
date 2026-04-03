@@ -342,7 +342,7 @@
         <item>1</item>
         <item>0</item>
         <item>0</item>
-    </string-array></file><file path="/home/akshatdhondiyal/Documents/NaviGo/app/src/main/res/values/themes.xml" qualifiers=""><style name="Theme.NaviGo" parent="android:Theme.Material.NoActionBar">
+    </string-array><string name="upload_failed">Upload failed: %1$s</string><string name="upload">Upload</string><string name="upload_success">Venue uploaded to MapShare!</string><string name="uploading">Uploading venue...</string></file><file path="/home/akshatdhondiyal/Documents/NaviGo/app/src/main/res/values/themes.xml" qualifiers=""><style name="Theme.NaviGo" parent="android:Theme.Material.NoActionBar">
         <item name="android:statusBarColor">#FF121212</item>
         <item name="android:navigationBarColor">#FF121212</item>
         <item name="android:windowBackground">#FF121212</item>

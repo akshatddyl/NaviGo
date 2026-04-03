@@ -446,6 +446,10 @@ string tts_not_found
 string tts_not_found_dest
 string tts_route_found
 string tts_which_floor
+string upload
+string upload_failed
+string upload_success
+string uploading
 string view_map
 string walk_straight
 string where_are_you

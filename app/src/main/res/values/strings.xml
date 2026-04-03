@@ -17,6 +17,10 @@
     <string name="no_venues_hint">Download a public venue from MapShare, or set up your own using Setup Mode.</string>
     <string name="navigate">Navigate</string>
     <string name="share">Share</string>
+    <string name="upload">Upload</string>
+    <string name="uploading">Uploading venue...</string>
+    <string name="upload_success">Venue uploaded to MapShare!</string>
+    <string name="upload_failed">Upload failed: %1$s</string>
 
     <!-- Localization Flow -->
     <string name="finding_your_route">Finding Your Route</string>

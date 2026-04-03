@@ -9,13 +9,17 @@ import com.sensecode.navigo.data.local.dao.EdgeDao
 import com.sensecode.navigo.data.local.dao.LocationNodeDao
 import com.sensecode.navigo.data.local.entity.EdgeEntity
 import com.sensecode.navigo.data.local.entity.LocationNodeEntity
+import com.sensecode.navigo.data.remote.firebase.FirebaseAuthService
 import com.sensecode.navigo.data.repository.VenueRepository
 import com.sensecode.navigo.domain.model.Venue
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,6 +31,7 @@ class HomeViewModel @Inject constructor(
     private val edgeDao: EdgeDao,
     private val speechInputManager: SpeechInputManager,
     private val ttsManager: TtsManager,
+    private val authService: FirebaseAuthService,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -36,7 +41,12 @@ class HomeViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    /** Current language code: "en" or "hi" */
+    private val _isUploading = MutableStateFlow(false)
+    val isUploading: StateFlow<Boolean> = _isUploading.asStateFlow()
+
+    private val _uploadResult = MutableSharedFlow<Result<String>>()
+    val uploadResult: SharedFlow<Result<String>> = _uploadResult.asSharedFlow()
+
     private val _currentLanguage = MutableStateFlow("en")
     val currentLanguage: StateFlow<String> = _currentLanguage.asStateFlow()
 
@@ -45,11 +55,9 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
-        // Restore saved language preference
         val savedLang = prefs.getString("app_language", "en") ?: "en"
         _currentLanguage.value = savedLang
         applyLanguage(savedLang)
-
         loadLocalVenues()
     }
 
@@ -66,12 +74,28 @@ class HomeViewModel @Inject constructor(
         loadLocalVenues()
     }
 
-    /**
-     * Toggle between English and Hindi.
-     * Persists preference and updates speech recognizer locale + TTS language.
-     * The calling Composable must call activity.recreate() afterwards
-     * since @ApplicationContext cannot be cast to Activity.
-     */
+    fun uploadVenue(venue: Venue) {
+        viewModelScope.launch {
+            val user = authService.getCurrentUser()
+            if (user == null) {
+                _uploadResult.emit(Result.failure(Exception("Please login as a publisher to upload maps.")))
+                return@launch
+            }
+
+            _isUploading.value = true
+            // Append user UID to venue name if it's the demo venue to ensure unique ID/path if needed
+            // but the repository handles the Firestore document mapping.
+            val result = venueRepository.uploadVenueToMapShare(venue.venueId, user.uid)
+            _isUploading.value = false
+            
+            if (result.isSuccess) {
+                _uploadResult.emit(Result.success(venue.name))
+            } else {
+                _uploadResult.emit(Result.failure(result.exceptionOrNull() ?: Exception("Upload failed")))
+            }
+        }
+    }
+
     fun toggleLanguage() {
         val newLang = if (_currentLanguage.value == "en") "hi" else "en"
         _currentLanguage.value = newLang
@@ -89,73 +113,20 @@ class HomeViewModel @Inject constructor(
         try {
             val existingNodes = nodeDao.getNodesByVenue("demo_venue")
             if (existingNodes.isNotEmpty()) return
-
-            // Load demo data from assets
             val json = context.assets.open("demo_venue_data.json").bufferedReader().use { it.readText() }
-            val gson = Gson()
-
-            val demoData = gson.fromJson(json, DemoVenueData::class.java)
-
-            val nodeEntities = demoData.nodes.map { node ->
-                LocationNodeEntity(
-                    id = node.id,
-                    name = node.name,
-                    floor = node.floor,
-                    venueId = node.venueId,
-                    accessible = node.accessible,
-                    type = node.type,
-                    relativeX = node.relativeX,
-                    relativeY = node.relativeY
-                )
-            }
-
-            val edgeEntities = demoData.edges.map { edge ->
-                EdgeEntity(
-                    fromNodeId = edge.fromNodeId,
-                    toNodeId = edge.toNodeId,
-                    venueId = edge.venueId,
-                    distanceM = edge.distanceM,
-                    directionDegrees = edge.directionDegrees,
-                    directionLabel = edge.directionLabel,
-                    instruction = edge.instruction,
-                    hasStairs = edge.hasStairs,
-                    estimatedSeconds = edge.estimatedSeconds
-                )
-            }
-
-            nodeDao.insertAllNodes(nodeEntities)
-            edgeDao.insertAllEdges(edgeEntities)
+            val demoData = Gson().fromJson(json, DemoVenueData::class.java)
+            nodeDao.insertAllNodes(demoData.nodes.map { node ->
+                LocationNodeEntity(node.id, node.name, node.floor, node.venueId, node.accessible, node.type, node.relativeX, node.relativeY)
+            })
+            edgeDao.insertAllEdges(demoData.edges.map { edge ->
+                EdgeEntity(edge.fromNodeId, edge.toNodeId, edge.venueId, edge.distanceM, edge.directionDegrees, edge.directionLabel, edge.instruction, edge.hasStairs, edge.estimatedSeconds)
+            })
         } catch (e: Exception) {
-            // Demo data not available — graceful degradation
             android.util.Log.w("HomeViewModel", "Demo venue data not loaded: ${e.message}")
         }
     }
 }
 
-data class DemoVenueData(
-    val nodes: List<DemoNode>,
-    val edges: List<DemoEdge>
-)
-
-data class DemoNode(
-    val id: String,
-    val name: String,
-    val floor: Int,
-    val venueId: String,
-    val accessible: Boolean,
-    val type: String,
-    val relativeX: Float,
-    val relativeY: Float
-)
-
-data class DemoEdge(
-    val fromNodeId: String,
-    val toNodeId: String,
-    val venueId: String,
-    val distanceM: Float,
-    val directionDegrees: Float,
-    val directionLabel: String,
-    val instruction: String,
-    val hasStairs: Boolean,
-    val estimatedSeconds: Int
-)
+data class DemoVenueData(val nodes: List<DemoNode>, val edges: List<DemoEdge>)
+data class DemoNode(val id: String, val name: String, val floor: Int, val venueId: String, val accessible: Boolean, val type: String, val relativeX: Float, val relativeY: Float)
+data class DemoEdge(val fromNodeId: String, val toNodeId: String, val venueId: String, val distanceM: Float, val directionDegrees: Float, val directionLabel: String, val instruction: String, val hasStairs: Boolean, val estimatedSeconds: Int)

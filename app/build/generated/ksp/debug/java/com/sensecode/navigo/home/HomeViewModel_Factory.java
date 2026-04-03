@@ -5,6 +5,7 @@ import com.sensecode.navigo.audio.SpeechInputManager;
 import com.sensecode.navigo.audio.TtsManager;
 import com.sensecode.navigo.data.local.dao.EdgeDao;
 import com.sensecode.navigo.data.local.dao.LocationNodeDao;
+import com.sensecode.navigo.data.remote.firebase.FirebaseAuthService;
 import com.sensecode.navigo.data.repository.VenueRepository;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
@@ -39,35 +40,40 @@ public final class HomeViewModel_Factory implements Factory<HomeViewModel> {
 
   private final Provider<TtsManager> ttsManagerProvider;
 
+  private final Provider<FirebaseAuthService> authServiceProvider;
+
   private final Provider<Context> contextProvider;
 
   public HomeViewModel_Factory(Provider<VenueRepository> venueRepositoryProvider,
       Provider<LocationNodeDao> nodeDaoProvider, Provider<EdgeDao> edgeDaoProvider,
       Provider<SpeechInputManager> speechInputManagerProvider,
-      Provider<TtsManager> ttsManagerProvider, Provider<Context> contextProvider) {
+      Provider<TtsManager> ttsManagerProvider, Provider<FirebaseAuthService> authServiceProvider,
+      Provider<Context> contextProvider) {
     this.venueRepositoryProvider = venueRepositoryProvider;
     this.nodeDaoProvider = nodeDaoProvider;
     this.edgeDaoProvider = edgeDaoProvider;
     this.speechInputManagerProvider = speechInputManagerProvider;
     this.ttsManagerProvider = ttsManagerProvider;
+    this.authServiceProvider = authServiceProvider;
     this.contextProvider = contextProvider;
   }
 
   @Override
   public HomeViewModel get() {
-    return newInstance(venueRepositoryProvider.get(), nodeDaoProvider.get(), edgeDaoProvider.get(), speechInputManagerProvider.get(), ttsManagerProvider.get(), contextProvider.get());
+    return newInstance(venueRepositoryProvider.get(), nodeDaoProvider.get(), edgeDaoProvider.get(), speechInputManagerProvider.get(), ttsManagerProvider.get(), authServiceProvider.get(), contextProvider.get());
   }
 
   public static HomeViewModel_Factory create(Provider<VenueRepository> venueRepositoryProvider,
       Provider<LocationNodeDao> nodeDaoProvider, Provider<EdgeDao> edgeDaoProvider,
       Provider<SpeechInputManager> speechInputManagerProvider,
-      Provider<TtsManager> ttsManagerProvider, Provider<Context> contextProvider) {
-    return new HomeViewModel_Factory(venueRepositoryProvider, nodeDaoProvider, edgeDaoProvider, speechInputManagerProvider, ttsManagerProvider, contextProvider);
+      Provider<TtsManager> ttsManagerProvider, Provider<FirebaseAuthService> authServiceProvider,
+      Provider<Context> contextProvider) {
+    return new HomeViewModel_Factory(venueRepositoryProvider, nodeDaoProvider, edgeDaoProvider, speechInputManagerProvider, ttsManagerProvider, authServiceProvider, contextProvider);
   }
 
   public static HomeViewModel newInstance(VenueRepository venueRepository, LocationNodeDao nodeDao,
       EdgeDao edgeDao, SpeechInputManager speechInputManager, TtsManager ttsManager,
-      Context context) {
-    return new HomeViewModel(venueRepository, nodeDao, edgeDao, speechInputManager, ttsManager, context);
+      FirebaseAuthService authService, Context context) {
+    return new HomeViewModel(venueRepository, nodeDao, edgeDao, speechInputManager, ttsManager, authService, context);
   }
 }

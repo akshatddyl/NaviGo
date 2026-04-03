@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sensecode.navigo.R
 import com.sensecode.navigo.home.HomeViewModel
 import com.sensecode.navigo.navigation_ui.ui.GraphMapView
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,11 +40,28 @@ fun HomeScreen(
 ) {
     val localVenues by viewModel.localVenues.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val isUploading by viewModel.isUploading.collectAsStateWithLifecycle()
     val currentLanguage by viewModel.currentLanguage.collectAsStateWithLifecycle()
     val view = LocalView.current
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val context = LocalContext.current
     val activity = context as? android.app.Activity
+
+    // Handle upload results
+    LaunchedEffect(viewModel.uploadResult) {
+        viewModel.uploadResult.collectLatest { result ->
+            result.onSuccess { venueName ->
+                snackbarHostState.showSnackbar(
+                    context.getString(R.string.upload_success)
+                )
+            }.onFailure { error ->
+                snackbarHostState.showSnackbar(
+                    context.getString(R.string.upload_failed, error.message)
+                )
+            }
+        }
+    }
 
     // Announce venue count when loaded
     LaunchedEffect(localVenues.size) {
@@ -57,6 +75,7 @@ fun HomeScreen(
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -118,132 +137,143 @@ fun HomeScreen(
             )
         }
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            // Action buttons
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    HomeActionCard(
-                        modifier = Modifier.weight(1f),
-                        icon = Icons.Default.AddLocation,
-                        label = stringResource(R.string.setup_new_venue),
-                        tint = MaterialTheme.colorScheme.primary,
-                        contentDesc = "Set up a new venue map. Opens venue recording mode.",
-                        onClick = onNavigateToSetup
-                    )
-
-                    HomeActionCard(
-                        modifier = Modifier.weight(1f),
-                        icon = Icons.Default.Public,
-                        label = stringResource(R.string.mapshare_browse),
-                        tint = MaterialTheme.colorScheme.secondary,
-                        contentDesc = "Browse and download public venue maps from MapShare.",
-                        onClick = onNavigateToMapShare
-                    )
-
-                    HomeActionCard(
-                        modifier = Modifier.weight(1f),
-                        icon = Icons.Default.Login,
-                        label = stringResource(R.string.publisher_login),
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        contentDesc = "Login as a venue publisher to upload maps.",
-                        onClick = onNavigateToPublisherLogin
-                    )
-                }
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    stringResource(R.string.saved_venues),
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.semantics {
-                        contentDescription = "Saved venues section. ${localVenues.size} venues available."
-                        liveRegion = LiveRegionMode.Polite
-                    }
-                )
-            }
-
-            if (isLoading) {
+        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Action buttons
                 item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(32.dp),
-                        contentAlignment = Alignment.Center
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.semantics { contentDescription = "Loading saved venues" }
+                        HomeActionCard(
+                            modifier = Modifier.weight(1f),
+                            icon = Icons.Default.AddLocation,
+                            label = stringResource(R.string.setup_new_venue),
+                            tint = MaterialTheme.colorScheme.primary,
+                            contentDesc = "Set up a new venue map. Opens venue recording mode.",
+                            onClick = onNavigateToSetup
+                        )
+
+                        HomeActionCard(
+                            modifier = Modifier.weight(1f),
+                            icon = Icons.Default.Public,
+                            label = stringResource(R.string.mapshare_browse),
+                            tint = MaterialTheme.colorScheme.secondary,
+                            contentDesc = "Browse and download public venue maps from MapShare.",
+                            onClick = onNavigateToMapShare
+                        )
+
+                        HomeActionCard(
+                            modifier = Modifier.weight(1f),
+                            icon = Icons.Default.Login,
+                            label = stringResource(R.string.publisher_login),
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            contentDesc = "Login as a venue publisher to upload maps.",
+                            onClick = onNavigateToPublisherLogin
                         )
                     }
                 }
-            } else if (localVenues.isEmpty()) {
+
                 item {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp)
-                            .semantics {
-                                contentDescription = "No venues saved yet. Download a public venue from MapShare, or set up your own using Setup Mode."
-                            }
-                    ) {
-                        Column(
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        stringResource(R.string.saved_venues),
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.semantics {
+                            contentDescription = "Saved venues section. ${localVenues.size} venues available."
+                            liveRegion = LiveRegionMode.Polite
+                        }
+                    )
+                }
+
+                if (isLoading) {
+                    item {
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(24.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                                .padding(32.dp),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Icon(
-                                Icons.Default.LocationOff,
-                                contentDescription = null,
-                                modifier = Modifier.size(48.dp),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Spacer(modifier = Modifier.height(12.dp))
-                            Text(
-                                stringResource(R.string.no_venues_saved),
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 20.sp
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                stringResource(R.string.no_venues_hint),
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 18.sp
+                            CircularProgressIndicator(
+                                modifier = Modifier.semantics { contentDescription = "Loading saved venues" }
                             )
                         }
                     }
-                }
-            } else {
-                items(localVenues) { venue ->
-                    VenueCard(
-                        venueName = venue.name,
-                        venueId = venue.venueId,
-                        floors = venue.floors,
-                        nodeCount = venue.nodeCount,
-                        onNavigate = { onNavigateToLocalization(venue.venueId) },
-                        onShare = {
-                            // Share venue info
-                            val context = view.context
-                            val shareText = "Check out \"${venue.name}\" on NaviGo! " +
-                                    "${venue.floors} floor(s), ${venue.nodeCount} locations mapped for indoor navigation."
-                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                                type = "text/plain"
-                                putExtra(Intent.EXTRA_TEXT, shareText)
+                } else if (localVenues.isEmpty()) {
+                    item {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp)
+                                .semantics {
+                                    contentDescription = "No venues saved yet. Download a public venue from MapShare, or set up your own using Setup Mode."
+                                }
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(24.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    Icons.Default.LocationOff,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(48.dp),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Spacer(modifier = Modifier.height(12.dp))
+                                Text(
+                                    stringResource(R.string.no_venues_saved),
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 20.sp
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    stringResource(R.string.no_venues_hint),
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    fontSize = 18.sp
+                                )
                             }
-                            context.startActivity(Intent.createChooser(shareIntent, "Share Venue"))
                         }
-                    )
+                    }
+                } else {
+                    items(localVenues) { venue ->
+                        VenueCard(
+                            venueName = venue.name,
+                            floors = venue.floors,
+                            nodeCount = venue.nodeCount,
+                            onNavigate = { onNavigateToLocalization(venue.venueId) },
+                            onUpload = { viewModel.uploadVenue(venue) }
+                        )
+                    }
+                }
+            }
+
+            if (isUploading) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = Color.Black.copy(alpha = 0.5f)
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator(color = Color(0xFFFFD600))
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            stringResource(R.string.uploading),
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }
@@ -292,17 +322,16 @@ private fun HomeActionCard(
 @Composable
 private fun VenueCard(
     venueName: String,
-    venueId: String,
     floors: Int,
     nodeCount: Int,
     onNavigate: () -> Unit,
-    onShare: () -> Unit
+    onUpload: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .semantics {
-                contentDescription = "Venue: $venueName. $floors floors, $nodeCount locations. Tap Navigate to start, or Share to send to others."
+                contentDescription = "Venue: $venueName. $floors floors, $nodeCount locations. Tap Navigate to start, or Upload to share with others."
             }
     ) {
         Column(
@@ -358,18 +387,18 @@ private fun VenueCard(
                 }
 
                 OutlinedButton(
-                    onClick = onShare,
+                    onClick = onUpload,
                     modifier = Modifier
                         .height(48.dp)
-                        .semantics { contentDescription = "Share $venueName venue info" }
+                        .semantics { contentDescription = "Upload $venueName to MapShare" }
                 ) {
                     Icon(
-                        Icons.Default.Share,
+                        Icons.Default.CloudUpload,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(stringResource(R.string.share), fontSize = 16.sp)
+                    Text(stringResource(R.string.upload), fontSize = 16.sp)
                 }
             }
         }

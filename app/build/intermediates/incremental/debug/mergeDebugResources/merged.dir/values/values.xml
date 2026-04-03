@@ -455,6 +455,10 @@
     <string name="tts_not_found_dest">I couldn\'t find that location. Please try again.</string>
     <string name="tts_route_found">Route found. %1$s, approximately %2$d minutes walk. Starting navigation now.</string>
     <string name="tts_which_floor">Which floor are you currently on?</string>
+    <string name="upload">Upload</string>
+    <string name="upload_failed">Upload failed: %1$s</string>
+    <string name="upload_success">Venue uploaded to MapShare!</string>
+    <string name="uploading">Uploading venue...</string>
     <string name="view_map">View Map</string>
     <string name="walk_straight">Walk straight</string>
     <string name="where_are_you">Where are you right now?</string>
@@ -523,23 +527,14 @@
         <attr format="reference" name="fontProviderCerts"/>
         
         <attr name="fontProviderFetchStrategy">
-            <!-- The blocking font fetch works as follows.
-              First, check the local cache, then if the requested font is not cached, request the
-              font from the provider and wait until it is finished.  You can change the length of
-              the timeout by modifying fontProviderFetchTimeout.  If the timeout happens, the
-              default typeface will be used instead. -->
+            
             <enum name="blocking" value="0"/>
-            <!-- The async font fetch works as follows.
-              First, check the local cache, then if the requeted font is not cached, trigger a
-              request the font and continue with layout inflation. Once the font fetch succeeds, the
-              target text view will be refreshed with the downloaded font data. The
-              fontProviderFetchTimeout will be ignored if async loading is specified. -->
+            
             <enum name="async" value="1"/>
         </attr>
         
         <attr format="integer" name="fontProviderFetchTimeout">
-            <!-- A special value for the timeout. In this case, the blocking font fetching will not
-              timeout and wait until a reply is received from the font provider. -->
+            
             <enum name="forever" value="-1"/>
         </attr>
         
