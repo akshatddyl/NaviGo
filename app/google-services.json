@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "794382930467",
+    "project_id": "navigo-app2",
+    "storage_bucket": "navigo-app2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794382930467:android:71f9d798fb6572deae9796",
+        "android_client_info": {
+          "package_name": "com.sensecode.navigo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZI24v-mMrsxd_R4LNDwG-92a9gYwQH7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.sensecode.navigo.app-mergeDebugResources-66:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/home/akshatdhondiyal/.gradle/caches/8.12/transforms/0c2e3be3d9ebba3cbfb9dd4c1f94ed6b/transformed/core-1.12.0/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        }
+    ]
+}

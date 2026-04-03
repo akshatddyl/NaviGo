@@ -1,0 +1,32 @@
+[
+  {
+    "canonical_name": "emergency_room",
+    "display_name": "Emergency Room",
+    "building_types": ["hospital"],
+    "category": "emergency",
+    "urgency_level": "high",
+    "floor_hints": ["ground"],
+    "intent_keywords": ["emergency", "casualty", "trauma", "urgent", "accident"],
+    "aliases": ["emergency room", "casualty", "trauma center", "accident room", "er", "ed", "emergency department", "aapatkaaleen kaksh", "emergency ward", "casualty ward", "trauma ward", "wo accident wala room kahan hai", "jaldi chalo andar wala", "chot lagi hai kahan jau", "doctor ke paas jaldi le chalo", "beta, emergency kahan hai", "beti, casualty kidhar hai", "emergency dikha do", "where is the emergency room", "emergency kahan hai", "kasualty kidhar hai", "mujhe turant doctor chahiye", "bhaut khoon beh raha hai kahan jaun", "accident case kahan jayega", "chot lagi room", "emergency ka rasta batao"]
+  },
+  {
+    "canonical_name": "server_room",
+    "display_name": "Server Room",
+    "building_types": ["university", "office", "hospital"],
+    "category": "facility",
+    "urgency_level": "low",
+    "floor_hints": ["any"],
+    "intent_keywords": ["server", "it", "network", "data"],
+    "aliases": ["server room", "it room", "network room", "data center", "mukhya server kaksh", "network kaksh", "data kendra", "server wala room", "it ka kamra", "network ka room", "datacenter", "computer room", "tech room", "com lab", "server hall", "it hub", "sever room", "sarvar room", "deta center", "dat center", "mujhe server room jana hai net line toot gayee", "jaldi batao server kahan hai", "wo it wala room", "andar wala machine room", "bade computer wala room", "taar wala kamra", "beta, it room kahan hai", "beti, server dikha do", "where is the server room", "it room kahan hai", "data center kidhar hai", "internet kahan se aata hai wala room"]
+  },
+  {
+    "canonical_name": "atm",
+    "display_name": "ATM",
+    "building_types": ["mall", "university", "hospital", "office"],
+    "category": "facility",
+    "urgency_level": "medium",
+    "floor_hints": ["ground"],
+    "intent_keywords": ["atm", "cash", "money", "bank"],
+    "aliases": ["atm machine", "automated teller machine", "cash machine", "money machine", "bank counter", "atm", "cashpoint", "atm ki machine", "paise nikalne ki machine", "paisa nikaalne wala dabba", "atm wali jagah", "cash counter", "paisa nikaalne ki jagah", "at m", "atym", "any time money", "cash macine", "mujhe paise chahiye jaldi", "kahan hai yaar atm", "help me find atm", "paise khatam ho gaye atm kahan hai", "wo paise nikalne wali machine", "shoppig karni hai atm batao", "paisa nikalna hai", "beta, atm kahan hai", "beti, paise nikalne ki machine kidhar hai", "where is the atm", "atm kahan hai", "cash kahan se niklega", "paisa machine"]
+  }
+]

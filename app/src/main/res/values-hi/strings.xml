@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NaviGo</string>
+    <string name="app_subtitle">सबके लिए इंडोर नेविगेशन</string>
+
+    <!-- Language toggle -->
+    <string name="lang_toggle_label">English</string>
+    <string name="lang_current">हिंदी</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">NaviGo</string>
+    <string name="setup_new_venue">सेटअप\nनया स्थान</string>
+    <string name="mapshare_browse">मैपशेयर\nखोजें</string>
+    <string name="publisher_login">प्रकाशक\nलॉगिन</string>
+    <string name="saved_venues">सहेजे गए स्थान</string>
+    <string name="no_venues_saved">अभी तक कोई स्थान सहेजा नहीं गया</string>
+    <string name="no_venues_hint">मैपशेयर से सार्वजनिक स्थान डाउनलोड करें, या सेटअप मोड का उपयोग करके अपना बनाएं।</string>
+    <string name="navigate">नेविगेट करें</string>
+    <string name="share">शेयर करें</string>
+
+    <!-- Localization Flow -->
+    <string name="finding_your_route">आपका रास्ता खोज रहे हैं</string>
+    <string name="step_1_floor">चरण 1/3: आपकी मंजिल</string>
+    <string name="step_2_start">चरण 2/3: आपका स्थान</string>
+    <string name="step_3_destination">चरण 3/3: गंतव्य</string>
+    <string name="route_found">रास्ता मिल गया!</string>
+    <string name="starting_navigation">नेविगेशन शुरू हो रहा है…</string>
+    <string name="which_floor">आप किस मंजिल पर हैं?</string>
+    <string name="where_are_you">आप अभी कहाँ हैं?</string>
+    <string name="where_to_go">आप कहाँ जाना चाहते हैं?</string>
+    <string name="tap_to_speak">बोलने के लिए टैप करें</string>
+    <string name="listening">सुन रहा हूँ…</string>
+    <string name="searching">खोज रहा हूँ…</string>
+    <string name="i_heard">मैंने सुना:</string>
+    <string name="hearing">सुन रहा हूँ:</string>
+
+    <!-- Navigation -->
+    <string name="navigation_title">नेविगेशन</string>
+    <string name="stop_navigation">नेविगेशन बंद करें</string>
+    <string name="directions">दिशा-निर्देश</string>
+    <string name="arrived">पहुँच गए!</string>
+    <string name="walk_straight">सीधे चलें</string>
+
+    <!-- MapShare -->
+    <string name="mapshare_title">मैपशेयर</string>
+    <string name="search_venues">नाम से स्थान खोजें…</string>
+    <string name="public_venues">सार्वजनिक स्थान</string>
+    <string name="my_local_venues">मेरे स्थानीय स्थान</string>
+    <string name="no_public_venues">कोई सार्वजनिक स्थान नहीं मिला।\nसंस्थाएं सेटअप मोड का उपयोग करके स्थान जोड़ सकती हैं।</string>
+    <string name="view_map">नक्शा देखें</string>
+    <string name="download">डाउनलोड</string>
+    <string name="downloaded">डाउनलोड हो गया</string>
+    <string name="map_preview">नक्शा पूर्वावलोकन</string>
+
+    <!-- TTS prompts (Hindi) -->
+    <string name="tts_which_floor">आप अभी किस मंजिल पर हैं?</string>
+    <string name="tts_heard_floor">मैंने सुना: मंजिल %1$d। अब बताइए, आप अभी कहाँ हैं?</string>
+    <string name="tts_found_start">मिल गया। आप %1$s पर हैं। आप कहाँ जाना चाहते हैं?</string>
+    <string name="tts_not_found">वह जगह नहीं मिली। कृपया दोबारा बताइए। आप अभी कहाँ हैं?</string>
+    <string name="tts_route_found">रास्ता मिल गया। %1$s, लगभग %2$d मिनट पैदल। नेविगेशन शुरू हो रहा है।</string>
+    <string name="tts_no_route">रास्ता नहीं मिला। %1$s। कृपया कोई और गंतव्य बताइए।</string>
+    <string name="tts_not_found_dest">वह जगह नहीं मिली। कृपया दोबारा बताइए।</string>
+
+    <!-- Error messages -->
+    <string name="error_no_match">मैं समझ नहीं पाया। माइक पर टैप करके दोबारा बोलें।</string>
+    <string name="error_timeout">कुछ सुनाई नहीं दिया। माइक पर टैप करके स्पष्ट रूप से बोलें।</string>
+    <string name="error_audio">माइक्रोफ़ोन में त्रुटि। कृपया जाँचें और दोबारा प्रयास करें।</string>
+    <string name="error_permission">माइक्रोफ़ोन अनुमति आवश्यक है। कृपया सेटिंग्स में अनुमति दें।</string>
+    <string name="error_network">नेटवर्क समस्या। कृपया अपना कनेक्शन जाँचें और दोबारा प्रयास करें।</string>
+    <string name="error_busy">वॉइस रिकॉग्नाइज़र व्यस्त है। कृपया प्रतीक्षा करें।</string>
+    <string name="error_generic">वॉइस पहचान त्रुटि। माइक पर टैप करके दोबारा प्रयास करें।</string>
+
+    <!-- Step counter -->
+    <string name="step_sensor_unavailable">इस डिवाइस पर स्टेप सेंसर उपलब्ध नहीं है।</string>
+
+    <!-- Navigation Engine TTS (turn-by-turn in Hindi) -->
+    <string name="nav_starting">%1$s से %2$s तक नेविगेशन शुरू हो रहा है।</string>
+    <string name="nav_total_distance">कुल दूरी: %1$d मीटर।</string>
+    <string name="nav_first_instruction">पहले, %1$s, दिशा %2$s।</string>
+    <string name="nav_destination">गंतव्य</string>
+    <string name="nav_heading">दिशा %1$s।</string>
+    <string name="nav_in_steps">%1$d कदम में, %2$s।</string>
+    <string name="nav_wrong_way">आप गलत दिशा में जा रहे हैं। कृपया मुड़ें और %1$s की ओर चलें।</string>
+    <string name="nav_drifting">आप रास्ते से भटक रहे हैं। %1$s की ओर दिशा ठीक करें।</string>
+    <string name="nav_back_on_track">बहुत अच्छा, आप सही रास्ते पर हैं।</string>
+    <string name="nav_missed_turn">शायद आपने मोड़ छोड़ दिया। कृपया अभी %1$s की ओर मुड़ें।</string>
+    <string name="nav_off_route">आप रास्ते से भटक गए हैं। नया रास्ता खोज रहे हैं।</string>
+    <string name="nav_new_route">नया रास्ता मिला। %1$s। दिशा %2$s।</string>
+    <string name="nav_reroute_failed">वैकल्पिक रास्ता नहीं मिला। कृपया पिछले ज्ञात स्थान पर वापस जाएं।</string>
+    <string name="nav_arrived">आप %1$s पर पहुँच गए हैं।</string>
+
+    <!-- Voice command keyword arrays (Hindi) -->
+    <string-array name="voice_keywords_i_am_here">
+        <item>मैं यहाँ हूँ</item>
+        <item>main yahan hun</item>
+        <item>मैं यहां हूं</item>
+        <item>पहुंच गया</item>
+        <item>pahunch gaya</item>
+        <item>यहां हूं</item>
+        <item>yahan hun</item>
+        <item>aa gaya</item>
+        <item>आ गया</item>
+    </string-array>
+
+    <string-array name="voice_keywords_floor">
+        <item>मंजिल</item>
+        <item>manjil</item>
+        <item>is floor pe</item>
+        <item>floor pe</item>
+        <item>तला</item>
+        <item>tala</item>
+        <item>tale pe</item>
+    </string-array>
+
+    <string-array name="voice_keywords_main_gate">
+        <item>मुख्य द्वार</item>
+        <item>mukhya dwar</item>
+        <item>मुख्य दरवाजा</item>
+        <item>main gate</item>
+        <item>प्रवेश द्वार</item>
+        <item>pravesh dwar</item>
+        <item>दरवाजा</item>
+    </string-array>
+
+    <string-array name="voice_keywords_help">
+        <item>मदद करो</item>
+        <item>madad karo</item>
+        <item>बचाओ</item>
+        <item>bachao</item>
+        <item>खतरा</item>
+        <item>khatara</item>
+        <item>मदद</item>
+        <item>madad</item>
+        <item>sos</item>
+    </string-array>
+
+    <!-- Hindi-to-English node type mappings (same as English file) -->
+    <string-array name="hindi_node_aliases_keys">
+        <item>शौचालय</item>
+        <item>toilet</item>
+        <item>sauchalay</item>
+        <item>bathroom</item>
+        <item>सीढ़ी</item>
+        <item>seedhi</item>
+        <item>stairs</item>
+        <item>लिफ्ट</item>
+        <item>lift</item>
+        <item>कैंटीन</item>
+        <item>canteen</item>
+        <item>kanteen</item>
+        <item>भोजनालय</item>
+        <item>bhojanaalay</item>
+        <item>मुख्य द्वार</item>
+        <item>mukhya dwar</item>
+        <item>main gate</item>
+        <item>प्रवेश द्वार</item>
+        <item>pravesh dwar</item>
+        <item>entrance</item>
+        <item>निकास</item>
+        <item>nikas</item>
+        <item>exit</item>
+        <item>दफ्तर</item>
+        <item>daftar</item>
+        <item>office</item>
+        <item>कमरा</item>
+        <item>kamra</item>
+        <item>room</item>
+        <item>गलियारा</item>
+        <item>galiyara</item>
+        <item>corridor</item>
+    </string-array>
+
+    <string-array name="hindi_node_aliases_values">
+        <item>toilet</item>
+        <item>toilet</item>
+        <item>toilet</item>
+        <item>toilet</item>
+        <item>staircase</item>
+        <item>staircase</item>
+        <item>staircase</item>
+        <item>elevator</item>
+        <item>elevator</item>
+        <item>canteen</item>
+        <item>canteen</item>
+        <item>canteen</item>
+        <item>canteen</item>
+        <item>canteen</item>
+        <item>entrance</item>
+        <item>entrance</item>
+        <item>entrance</item>
+        <item>entrance</item>
+        <item>entrance</item>
+        <item>entrance</item>
+        <item>exit</item>
+        <item>exit</item>
+        <item>exit</item>
+        <item>room</item>
+        <item>room</item>
+        <item>room</item>
+        <item>room</item>
+        <item>room</item>
+        <item>room</item>
+        <item>junction</item>
+        <item>junction</item>
+        <item>junction</item>
+    </string-array>
+
+    <!-- Hindi number words for floor parsing -->
+    <string-array name="hindi_numbers_keys">
+        <item>शून्य</item>
+        <item>एक</item>
+        <item>दो</item>
+        <item>तीन</item>
+        <item>चार</item>
+        <item>पांच</item>
+        <item>छह</item>
+        <item>सात</item>
+        <item>आठ</item>
+        <item>नौ</item>
+        <item>दस</item>
+        <item>ek</item>
+        <item>do</item>
+        <item>teen</item>
+        <item>char</item>
+        <item>panch</item>
+        <item>chah</item>
+        <item>saat</item>
+        <item>aath</item>
+        <item>nau</item>
+        <item>das</item>
+        <item>pehla</item>
+        <item>doosra</item>
+        <item>teesra</item>
+        <item>chautha</item>
+        <item>panchwa</item>
+        <item>pahla</item>
+        <item>ground</item>
+        <item>tala</item>
+    </string-array>
+
+    <string-array name="hindi_numbers_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
+    </string-array>
+</resources>

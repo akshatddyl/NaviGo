@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hindi_node_aliases_keys">
+        <item>शौचालय</item>
+        <item>toilet</item>
+        <item>sauchalay</item>
+        <item>bathroom</item>
+        <item>सीढ़ी</item>
+        <item>seedhi</item>
+        <item>stairs</item>
+        <item>लिफ्ट</item>
+        <item>lift</item>
+        <item>कैंटीन</item>
+        <item>canteen</item>
+        <item>kanteen</item>
+        <item>भोजनालय</item>
+        <item>bhojanaalay</item>
+        <item>मुख्य द्वार</item>
+        <item>mukhya dwar</item>
+        <item>main gate</item>
+        <item>प्रवेश द्वार</item>
+        <item>pravesh dwar</item>
+        <item>entrance</item>
+        <item>निकास</item>
+        <item>nikas</item>
+        <item>exit</item>
+        <item>दफ्तर</item>
+        <item>daftar</item>
+        <item>office</item>
+        <item>कमरा</item>
+        <item>kamra</item>
+        <item>room</item>
+        <item>गलियारा</item>
+        <item>galiyara</item>
+        <item>corridor</item>
+    </string-array>
+    <string-array name="hindi_node_aliases_values">
+        <item>toilet</item>
+        <item>toilet</item>
+        <item>toilet</item>
+        <item>toilet</item>
+        <item>staircase</item>
+        <item>staircase</item>
+        <item>staircase</item>
+        <item>elevator</item>
+        <item>elevator</item>
+        <item>canteen</item>
+        <item>canteen</item>
+        <item>canteen</item>
+        <item>canteen</item>
+        <item>canteen</item>
+        <item>entrance</item>
+        <item>entrance</item>
+        <item>entrance</item>
+        <item>entrance</item>
+        <item>entrance</item>
+        <item>entrance</item>
+        <item>exit</item>
+        <item>exit</item>
+        <item>exit</item>
+        <item>room</item>
+        <item>room</item>
+        <item>room</item>
+        <item>room</item>
+        <item>room</item>
+        <item>room</item>
+        <item>junction</item>
+        <item>junction</item>
+        <item>junction</item>
+    </string-array>
+    <string-array name="hindi_numbers_keys">
+        <item>शून्य</item>
+        <item>एक</item>
+        <item>दो</item>
+        <item>तीन</item>
+        <item>चार</item>
+        <item>पांच</item>
+        <item>छह</item>
+        <item>सात</item>
+        <item>आठ</item>
+        <item>नौ</item>
+        <item>दस</item>
+        <item>ek</item>
+        <item>do</item>
+        <item>teen</item>
+        <item>char</item>
+        <item>panch</item>
+        <item>chah</item>
+        <item>saat</item>
+        <item>aath</item>
+        <item>nau</item>
+        <item>das</item>
+        <item>pehla</item>
+        <item>doosra</item>
+        <item>teesra</item>
+        <item>chautha</item>
+        <item>panchwa</item>
+        <item>pahla</item>
+        <item>ground</item>
+        <item>tala</item>
+    </string-array>
+    <string-array name="hindi_numbers_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
+    </string-array>
+    <string-array name="voice_keywords_floor">
+        <item>floor</item>
+        <item>level</item>
+        <item>storey</item>
+        <item>story</item>
+    </string-array>
+    <string-array name="voice_keywords_help">
+        <item>help</item>
+        <item>sos</item>
+        <item>emergency</item>
+        <item>danger</item>
+        <item>save me</item>
+    </string-array>
+    <string-array name="voice_keywords_i_am_here">
+        <item>i am here</item>
+        <item>i have arrived</item>
+        <item>arrived</item>
+        <item>here</item>
+        <item>i reached</item>
+        <item>reached</item>
+    </string-array>
+    <string-array name="voice_keywords_main_gate">
+        <item>main gate</item>
+        <item>entrance</item>
+        <item>front gate</item>
+        <item>main door</item>
+        <item>main entrance</item>
+        <item>entry</item>
+    </string-array>
+    <string name="app_name">NaviGo</string>
+    <string name="app_subtitle">Indoor navigation for everyone</string>
+    <string name="arrived">Arrived!</string>
+    <string name="directions">Directions</string>
+    <string name="download">Download</string>
+    <string name="downloaded">Downloaded</string>
+    <string name="error_audio">Microphone error. Please check your mic and try again.</string>
+    <string name="error_busy">Voice recognizer is busy. Please wait and try again.</string>
+    <string name="error_generic">Voice recognition error. Tap the mic to try again.</string>
+    <string name="error_network">Network issue. Please check your connection and try again.</string>
+    <string name="error_no_match">I didn\'t catch that. Tap the mic and try again.</string>
+    <string name="error_permission">Microphone permission required. Please grant it in Settings.</string>
+    <string name="error_timeout">I didn\'t hear anything. Tap the mic and speak clearly.</string>
+    <string name="finding_your_route">Finding Your Route</string>
+    <string name="gcm_defaultSenderId" translatable="false">794382930467</string>
+    <string name="google_api_key" translatable="false">AIzaSyCZI24v-mMrsxd_R4LNDwG-92a9gYwQH7I</string>
+    <string name="google_app_id" translatable="false">1:794382930467:android:71f9d798fb6572deae9796</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCZI24v-mMrsxd_R4LNDwG-92a9gYwQH7I</string>
+    <string name="google_storage_bucket" translatable="false">navigo-app2.firebasestorage.app</string>
+    <string name="hearing">Hearing:</string>
+    <string name="home_title">NaviGo</string>
+    <string name="i_heard">I heard:</string>
+    <string name="lang_current">English</string>
+    <string name="lang_toggle_label">हिंदी</string>
+    <string name="listening">Listening…</string>
+    <string name="map_preview">Map Preview</string>
+    <string name="mapshare_browse">MapShare\nBrowse</string>
+    <string name="mapshare_title">MapShare</string>
+    <string name="my_local_venues">My Local Venues</string>
+    <string name="nav_arrived">You have arrived at %1$s.</string>
+    <string name="nav_back_on_track">Good, you\'re back on track.</string>
+    <string name="nav_destination">Destination</string>
+    <string name="nav_drifting">You are drifting off course. Adjust your heading towards %1$s.</string>
+    <string name="nav_first_instruction">First, %1$s heading %2$s.</string>
+    <string name="nav_heading">Heading %1$s.</string>
+    <string name="nav_in_steps">In %1$d steps, %2$s.</string>
+    <string name="nav_missed_turn">You may have missed the turn. Please turn towards %1$s now.</string>
+    <string name="nav_new_route">New route found. %1$s. Heading %2$s.</string>
+    <string name="nav_off_route">You are off route. Recalculating.</string>
+    <string name="nav_reroute_failed">Unable to find alternative route. Please return to the last known location.</string>
+    <string name="nav_starting">Starting navigation from %1$s to %2$s.</string>
+    <string name="nav_total_distance">Total distance: %1$d meters.</string>
+    <string name="nav_wrong_way">You are going the wrong way. Please turn around and head %1$s.</string>
+    <string name="navigate">Navigate</string>
+    <string name="navigation_title">Navigation</string>
+    <string name="no_public_venues">No public venues found.\nOrganizations can add venues using Setup Mode.</string>
+    <string name="no_venues_hint">Download a public venue from MapShare, or set up your own using Setup Mode.</string>
+    <string name="no_venues_saved">No venues saved yet</string>
+    <string name="project_id" translatable="false">navigo-app2</string>
+    <string name="public_venues">Public Venues</string>
+    <string name="publisher_login">Publisher\nLogin</string>
+    <string name="route_found">Route Found!</string>
+    <string name="saved_venues">Saved Venues</string>
+    <string name="search_venues">Search venues by name…</string>
+    <string name="searching">Searching…</string>
+    <string name="setup_new_venue">Setup\nNew Venue</string>
+    <string name="share">Share</string>
+    <string name="starting_navigation">Starting Navigation…</string>
+    <string name="step_1_floor">Step 1 of 3: Your Floor</string>
+    <string name="step_2_start">Step 2 of 3: Your Location</string>
+    <string name="step_3_destination">Step 3 of 3: Destination</string>
+    <string name="step_sensor_unavailable">Step sensor not available on this device.</string>
+    <string name="stop_navigation">Stop Navigation</string>
+    <string name="tap_to_speak">Tap to speak</string>
+    <string name="tts_found_start">Found it. You are at %1$s. Where would you like to go?</string>
+    <string name="tts_heard_floor">I heard: Floor %1$d. Now, where are you right now?</string>
+    <string name="tts_no_route">Could not find a route. %1$s. Please try a different destination.</string>
+    <string name="tts_not_found">I couldn\'t find that location. Please try again. Where are you right now?</string>
+    <string name="tts_not_found_dest">I couldn\'t find that location. Please try again.</string>
+    <string name="tts_route_found">Route found. %1$s, approximately %2$d minutes walk. Starting navigation now.</string>
+    <string name="tts_which_floor">Which floor are you currently on?</string>
+    <string name="view_map">View Map</string>
+    <string name="walk_straight">Walk straight</string>
+    <string name="where_are_you">Where are you right now?</string>
+    <string name="where_to_go">Where would you like to go?</string>
+    <string name="which_floor">Which floor are you on?</string>
+    <style name="Theme.NaviGo" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">#FF121212</item>
+        <item name="android:navigationBarColor">#FF121212</item>
+        <item name="android:windowBackground">#FF121212</item>
+        <item name="android:colorBackground">#FF121212</item>
+    </style>
+</resources>
