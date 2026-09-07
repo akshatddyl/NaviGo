@@ -75,13 +75,3 @@ It combines:
 - A Gemini API key
 
 ---
-
-## 🔐 Configuration
-
-Create or update `local.properties` in the project root:
-
-```properties
-NEO4J_URI=your-auradb-uri.databases.neo4j.io
-NEO4J_USERNAME=neo4j
-NEO4J_PASSWORD=your-auradb-password
-GEMINI_API_KEY=your-gemini-api-key
